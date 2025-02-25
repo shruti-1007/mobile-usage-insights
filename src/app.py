@@ -1,6 +1,9 @@
 import streamlit as st
 import joblib
 import pandas as pd
+# Data visualization libraries
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load the trained model
 model = joblib.load('C:/Users/Acer/Desktop/Data Science Project/models/battery_drain_model.pkl')
@@ -27,4 +30,3 @@ if st.button('Predict Battery Drain'):
 
     # Show the result
     st.write(f"Predicted Battery Drain: {predicted_battery_drain[0]:.2f} mAh")
-
