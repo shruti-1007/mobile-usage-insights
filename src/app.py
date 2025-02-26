@@ -4,6 +4,18 @@ import pandas as pd
 # Data visualization libraries
 import matplotlib.pyplot as plt
 import seaborn as sns
+import json
+
+# Function to scale input data manually
+def min_max_scale(value, min_val, max_val):
+    return (value - min_val) / (max_val - min_val) if max_val != min_val else 0  # Prevent division by zero
+# Function to reverse scaling (inverse scaling)
+def inverse_min_max_scale(scaled_value, min_val, max_val):
+    return (scaled_value * (max_val - min_val)) + min_val
+
+with open('C:/Users/Acer/Desktop/Data Science Project/data/min_max_values.json', 'r') as f:
+    min_max_values = json.load(f)
+
 
 # Load the trained model
 model = joblib.load('C:/Users/Acer/Desktop/Data Science Project/models/battery_drain_model.pkl')
@@ -19,14 +31,29 @@ number_of_apps = st.number_input('Enter Number of Apps', min_value=0, value=30)
 os_type = st.selectbox('Select OS Type', ['Android', 'iOS'])
 os_type = 1 if os_type == 'iOS' else 0
 
+input_data_scaled = [
+       
+    min_max_scale(screen_on_time, min_max_values['Screen On Time (hours/day)']['min'], min_max_values['Screen On Time (hours/day)']['max']),
+    min_max_scale(app_usage_time, min_max_values['App Usage Time (min/day)']['min'], min_max_values['App Usage Time (min/day)']['max']),
+    min_max_scale(data_usage, min_max_values['Data Usage (MB/day)']['min'], min_max_values['Data Usage (MB/day)']['max']),
+    min_max_scale(number_of_apps, min_max_values['Number of Apps Installed']['min'], min_max_values['Number of Apps Installed']['max']),
+   os_type]
+
+
 # Predict button
 if st.button('Predict Battery Drain'):
     # Prepare the input data as a DataFrame (model expects a 2D array)
-    input_data = pd.DataFrame([[screen_on_time, app_usage_time, data_usage, number_of_apps, os_type]],
+    input_data = pd.DataFrame([input_data_scaled],
                               columns=['Screen On Time (hours/day)', 'App Usage Time (min/day)', 'Data Usage (MB/day)', 'Number of Apps Installed', 'Operating System'])
+    # # Normalize the input data
+    # scaler = MinMaxScaler()
+    # scaled_input = scaler.transform(input_data)
 
     # Make a prediction
     predicted_battery_drain = model.predict(input_data)
+    predicted_battery_drain = inverse_min_max_scale(predicted_battery_drain[0], min_max_values['Battery Drain (mAh/day)']['min'], min_max_values['Battery Drain (mAh/day)']['max'])
+
 
     # Show the result
-    st.write(f"Predicted Battery Drain: {predicted_battery_drain[0]:.2f} mAh")
+    st.write(f"Predicted Battery Drain: {predicted_battery_drain:.2f} mAh")
+
