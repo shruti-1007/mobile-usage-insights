@@ -89,7 +89,7 @@ elif option == "Data Visualization and Insights":
     st.subheader("Correlation Heatmap of the Features")
     st.image('../visualizations/correlation_heatmap.png')
     st.write("#### Key Insights ")
-    st.write("""
+    st.markdown("""
 - **Everything is connected** – more screen time leads to higher app usage, battery drain, and data consumption.  
 - **Screen Time & App Usage (0.95):** More phone use = more active app engagement.  
 - **Battery Drain & Installed Apps (0.96):** More apps = higher battery consumption.  
@@ -97,18 +97,47 @@ elif option == "Data Visualization and Insights":
 """)
 
     st.subheader(" Android Vs iOS behaviour Analysis")
-    st.write("### Bar graph")
+    st.write("#### Bar graph")
     st.image('../visualizations/os_type_bar.png')
     st.write("##### Key Insights ")
-    st.write("""
+    st.markdown("""
     - **Battery Drain**: iOS users experience slightly higher battery drain compared to Android users.
     - **Screen On Time**: iOS users also have a slightly higher screen-on time, indicating more active usage.
     - **Data Usage**: iOS users consume more data on average than Android users.""")
-    st.write("### Box plot")
+    st.write("#### Box plot")
     st.image('../visualizations/os_boxplot.png')
     st.write("##### Key Insights ")
-    st.write("""
+    st.markdown("""
 - **Battery Drain**: Android and iOS users experience similar battery consumption, with a wide variation in both. No significant difference is observed.
 - **Screen On Time**: Both platforms have comparable screen-on times, suggesting similar usage patterns.
 - **Data Usage**: Android and iOS users consume data at nearly the same rate, with no clear outliers.
              """)
+    
+    st.subheader("Screen-On Time Analysis")
+    st.write("#### Distribution plot for different user categories")
+    st.image('../visualizations/screen_on_time_class.png')
+    st.write("##### Key Insights ")
+    st.markdown("""
+**📈 Positive Correlation**  
+- As the **Behavior Class** increases (1 → 5), **Screen-on Time** also increases consistently.  
+- This suggests that users in higher behavior classes spend **more time** on their screens daily.  
+
+**📊 Spread & Variability**  
+- **Lower classes (1 & 2):** Smaller interquartile ranges (IQR), meaning screen-on time is **more consistent** among users.  
+- **Higher classes (4 & 5):** Larger IQR, meaning screen-on time **varies significantly** among users.  
+
+**🔍 Outliers & Extreme Values**  
+- Some **extreme values** appear in all behavior classes.  
+- **Higher classes (4 & 5):** Wider range, suggesting some users in these classes **use their screens significantly more** than the median.  
+""")
+
+    st.write('#### Screen on time according to Gender')
+    st.image("../visualizations/screen_on_time_gender.png")
+    st.write("##### Key Insights ")
+    st.markdown(""" 
+- Median screen-on time is similar for both genders.
+- Variability (IQR) is nearly identical, meaning consistent usage patterns.
+- Outliers exist in both groups, indicating some heavy users.
+- No significant gender-based difference in screen usage.
+                """)
+
