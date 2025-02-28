@@ -19,7 +19,7 @@ The dataset contains the following features:
 - **Residual Plot**: Evaluates model performance.  
 - **Bar Charts**: Highlights differences in smartphone usage between Android and iOS users.  
 
-## 🤖 Model & Performance  
+## Model & Performance  
 - **Algorithm**: Linear Regression  
 - **Metrics**:  
   -  **R² Score**: `0.9434`  
