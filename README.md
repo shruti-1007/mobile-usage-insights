@@ -1,9 +1,9 @@
-# 📱 Unveiling Mobile Usage Patterns & Battery Drain Prediction  
+#  Unveiling Mobile Usage Patterns & Battery Drain Prediction  
 
-## 📌 Project Overview  
+##  Project Overview  
 This project analyzes smartphone usage patterns and predicts battery drain based on factors like screen time, app usage, data consumption, and the number of installed apps. The goal is to provide insights into user behavior and optimize power consumption.  
 
-## 📊 Dataset  
+## Dataset  
 The dataset contains the following features:  
 
 - **Screen On Time (hours/day)**  
@@ -13,25 +13,25 @@ The dataset contains the following features:
 - **Operating System (Android/iOS)**  
 - **Battery Drain (mAh/day) [Target Variable]**  
 
-## 🔍 Key Analyses & Visualizations  
-- 📈 **Correlation Heatmap**: Identifies relationships between features.  
-- 📊 **Box Plots**: Compares battery drain, screen time, and data usage across OS.  
-- 🔴 **Residual Plot**: Evaluates model performance.  
-- 📊 **Bar Charts**: Highlights differences in smartphone usage between Android and iOS users.  
+##  Key Analyses & Visualizations  
+- **Correlation Heatmap**: Identifies relationships between features.  
+- **Box Plots**: Compares battery drain, screen time, and data usage across OS.  
+- **Residual Plot**: Evaluates model performance.  
+- **Bar Charts**: Highlights differences in smartphone usage between Android and iOS users.  
 
 ## 🤖 Model & Performance  
 - **Algorithm**: Linear Regression  
 - **Metrics**:  
-  - 📌 **R² Score**: `0.9434`  
-  - 📌 **RMSE**: `0.0697`  
+  -  **R² Score**: `0.9434`  
+  -  **RMSE**: `0.0697`  
 - **Residual Analysis**: Ensures model assumptions hold.  
 
-## 🚀 Streamlit App Features  
-- 📊 **Interactive Visualizations**  
-- 🔢 **User Input for Predictions**  
-- 📉 **Model Performance**  
+##  Streamlit App Features  
+-  **Interactive Visualizations**  
+-  **User Input for Predictions**  
+-  **Model Performance**  
 
-## 🛠️ How to Run  
+##  How to Run  
 1. Install dependencies:  
    ```bash
    pip install -r requirements.txt
