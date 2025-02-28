@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 # Load the dataset
-df = pd.read_csv('C:/Users/Acer/Desktop/Data Science Project/data/preprocessed_data.csv')
+df = pd.read_csv('../data/preprocessed_data.csv')
 
 # Title of the dashboard
 st.title('Battery Drain Analysis Dashboard')

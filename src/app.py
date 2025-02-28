@@ -13,12 +13,12 @@ def min_max_scale(value, min_val, max_val):
 def inverse_min_max_scale(scaled_value, min_val, max_val):
     return (scaled_value * (max_val - min_val)) + min_val
 
-with open('C:/Users/Acer/Desktop/Data Science Project/data/min_max_values.json', 'r') as f:
+with open('../data/min_max_values.json', 'r') as f:
     min_max_values = json.load(f)
 
 
 # Load the trained model
-model = joblib.load('C:/Users/Acer/Desktop/Data Science Project/models/battery_drain_model.pkl')
+model = joblib.load('../models/battery_drain_model.pkl')
 
 # Title of the app
 st.title('Battery Drain Prediction')
@@ -45,10 +45,7 @@ if st.button('Predict Battery Drain'):
     # Prepare the input data as a DataFrame (model expects a 2D array)
     input_data = pd.DataFrame([input_data_scaled],
                               columns=['Screen On Time (hours/day)', 'App Usage Time (min/day)', 'Data Usage (MB/day)', 'Number of Apps Installed', 'Operating System'])
-    # # Normalize the input data
-    # scaler = MinMaxScaler()
-    # scaled_input = scaler.transform(input_data)
-
+    
     # Make a prediction
     predicted_battery_drain = model.predict(input_data)
     predicted_battery_drain = inverse_min_max_scale(predicted_battery_drain[0], min_max_values['Battery Drain (mAh/day)']['min'], min_max_values['Battery Drain (mAh/day)']['max'])
