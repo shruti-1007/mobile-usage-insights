@@ -29,7 +29,7 @@ The dataset contains the following features:
 ## 🚀 Streamlit App Features  
 - 📊 **Interactive Visualizations**  
 - 🔢 **User Input for Predictions**  
-- 📉 **Model Performance (Hidden Until Clicked)**  
+- 📉 **Model Performance**  
 
 ## 🛠️ How to Run  
 1. Install dependencies:  
