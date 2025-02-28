@@ -24,7 +24,7 @@ model = joblib.load('../models/battery_drain_model.pkl')
 
 
 # Title of the app
-st.title('Battery Drain Analysis')
+st.title('Unveiling Mobile Usage Patterns')
 
 
 # Sidebar for navigation
@@ -85,7 +85,7 @@ if option == "Battery Drain Prediction":
 
 
 elif option == "Data Visualization and Insights":
-    st.header(' Battery Drain Data Visualization')
+    st.header(' Mobile Usage Data Visualization')
     st.subheader("Correlation Heatmap of the Features")
     st.image('../visualizations/correlation_heatmap.png')
     st.write("#### Key Insights ")
@@ -94,6 +94,19 @@ elif option == "Data Visualization and Insights":
 - **Screen Time & App Usage (0.95):** More phone use = more active app engagement.  
 - **Battery Drain & Installed Apps (0.96):** More apps = higher battery consumption.  
 - **Data Usage (0.93-0.94):** Heavy users also consume more data.  
+""")
+    
+    st.subheader("Battery Drain Analysis")
+    st.image("../visualizations/screen_on_time_vs_battery_draIn.png")
+    st.image("../visualizations/data_consumption_vs_battery_drain.png")
+    st.image("../visualizations/app_usage_time_vs_battery_drain.png")
+    st.image("../visualizations/number_of_apps_installed_vs_battery_drain.png")
+    st.write("##### Key Insights ")
+    st.markdown("""
+- **Screen On Time & Battery Drain**: A clear positive correlation exists between screen-on time and battery drain.
+- **Data Usage & Battery Drain**: Users with higher data consumption also experience higher battery drain.
+- **App Usage Time & Battery Drain**: Users who spend more time on apps also have higher battery drain.
+- **Number of Apps & Battery Drain**: A positive correlation is observed between the number of apps installed and battery drain.
 """)
 
     st.subheader(" Android Vs iOS behaviour Analysis")
