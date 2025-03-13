@@ -4,7 +4,8 @@
 This project analyzes smartphone usage patterns and predicts battery drain based on factors like screen time, app usage, data consumption, and the number of installed apps. The goal is to provide insights into user behavior and optimize power consumption.  
 
 ## Dataset  
-The dataset contains the following features:  
+***Dataset Source***: [Mobile Device Usage and User Behavior Dataset - Kaggle](https://www.kaggle.com/datasets/valakhorasani/mobile-device-usage-and-user-behavior-dataset)
+***Dataset features***:  
 
 - **Screen On Time (hours/day)**  
 - **App Usage Time (min/day)**  
