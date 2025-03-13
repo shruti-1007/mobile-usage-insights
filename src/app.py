@@ -4,6 +4,33 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
+def battery_saving_recommendations(screen_on_time, app_usage_time, data_usage, number_of_apps, os_type):
+    recommendations = []
+    
+    # Based on screen time
+    if screen_on_time > 6:
+        recommendations.append("Consider reducing screen-on time to save battery. You may try using battery saver modes.")
+    
+    # Based on app usage time
+    if app_usage_time > 180:  # Example threshold for high app usage (in minutes)
+        recommendations.append("Reducing app usage can help conserve battery. Try limiting background app activity.")
+    
+    # Based on data usage
+    if data_usage > 1000:  # Example threshold for high data usage (in MB)
+        recommendations.append("High data usage impacts battery life. Consider reducing data-heavy app usage or using Wi-Fi more.")
+    
+    # Based on number of apps
+    if number_of_apps > 50:
+        recommendations.append("Too many apps can increase battery drain. Uninstall unnecessary apps to save battery.")
+    
+    # Based on OS type (if applicable, could be used for platform-specific advice)
+    if os_type == 1:  # iOS
+        recommendations.append("iOS users can benefit from enabling Low Power Mode when battery is running low.")
+    else:  # Android
+        recommendations.append("Android users can benefit from activating Battery Saver Mode to prolong battery life.")
+    
+    return recommendations
+
 
 
 # Function to scale input data manually
@@ -59,6 +86,14 @@ if option == "Battery Drain Prediction":
         predicted_battery_drain = inverse_min_max_scale(predicted_battery_drain[0], min_max_values['Battery Drain (mAh/day)']['min'], min_max_values['Battery Drain (mAh/day)']['max'])
         
         st.write(f"Predicted Battery Drain: {predicted_battery_drain:.2f} mAh")
+           
+          
+            # Display recommendations after prediction
+    if st.button('Show Battery Saving Tips'):
+                recommendations = battery_saving_recommendations(screen_on_time, app_usage_time, data_usage, number_of_apps, os_type)
+                st.write("#### Recommended Tips to Conserve Battery:")
+                for tip in recommendations:
+                   st.write(f"- {tip}")
     
     # Display Model Performance
 
@@ -82,6 +117,9 @@ if option == "Battery Drain Prediction":
                 - **Red trend line (LOWESS curve) is mostly flat**: Indicates no strong non-linearity in the model.
                 - **No clear funnel shape**: Suggests constant variance (homoscedasticity), meaning the model's errors are evenly distributed.
                 """)
+    
+
+
 
 
 elif option == "Data Visualization and Insights":
