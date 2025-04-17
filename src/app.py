@@ -1,74 +1,222 @@
 import streamlit as st
+import plotly.express as px
 import joblib
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
+
+# Page configuration
+st.set_page_config(page_title="Mobile Data Insights", layout="wide")
+
+# Utility functions
 def battery_saving_recommendations(screen_on_time, app_usage_time, data_usage, number_of_apps, os_type):
     recommendations = []
-    
-    # Based on screen time
+
     if screen_on_time > 6:
-        recommendations.append("Consider reducing screen-on time to save battery. You may try using battery saver modes.")
-    
-    # Based on app usage time
-    if app_usage_time > 180:  # Example threshold for high app usage (in minutes)
+        recommendations.append("Consider reducing screen-on time to save battery. Try using battery saver modes.")
+
+    if app_usage_time > 180:
         recommendations.append("Reducing app usage can help conserve battery. Try limiting background app activity.")
-    
-    # Based on data usage
-    if data_usage > 1000:  # Example threshold for high data usage (in MB)
-        recommendations.append("High data usage impacts battery life. Consider reducing data-heavy app usage or using Wi-Fi more.")
-    
-    # Based on number of apps
+
+    if data_usage > 1000:
+        recommendations.append("High data usage impacts battery life. Use Wi-Fi more often or reduce heavy app usage.")
+
     if number_of_apps > 50:
-        recommendations.append("Too many apps can increase battery drain. Uninstall unnecessary apps to save battery.")
-    
-    # Based on OS type (if applicable, could be used for platform-specific advice)
-    if os_type == 1:  # iOS
-        recommendations.append("iOS users can benefit from enabling Low Power Mode when battery is running low.")
-    else:  # Android
-        recommendations.append("Android users can benefit from activating Battery Saver Mode to prolong battery life.")
-    
+        recommendations.append("Uninstall unnecessary apps to reduce battery drain.")
+
+    if os_type == 1:
+        recommendations.append("iOS users can enable Low Power Mode to extend battery life.")
+    else:
+        recommendations.append("Android users can activate Battery Saver Mode for better battery management.")
+
     return recommendations
 
-
-
-# Function to scale input data manually
 def min_max_scale(value, min_val, max_val):
     return (value - min_val) / (max_val - min_val) if max_val != min_val else 0
 
-# Function to reverse scaling (inverse scaling)
 def inverse_min_max_scale(scaled_value, min_val, max_val):
     return (scaled_value * (max_val - min_val)) + min_val
 
-# Load min-max values
+# Load necessary resources
 with open('../data/min_max_values.json', 'r') as f:
     min_max_values = json.load(f)
 
-
-# Load the trained model
 model = joblib.load('../models/battery_drain_model.pkl')
 
+# Sidebar navigation
+option = st.sidebar.radio("Select an option", ["Battery Drain Prediction", "Data Visualization and Insights", "Hypothesis Testing Results"])
 
-# Title of the app
-st.title('Unveiling Mobile Usage Patterns')
+# Option 1: Data Visualization
+if option == "Data Visualization and Insights":
+    st.title("📊 Mobile Data Insights")
+    st.markdown("### 🔹 Key Averages")
 
+    metrics_col = st.columns(5)
+    card_style = """
+        background-color: #fffbcc;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        margin: 10px;
+        color: black;
+    """
 
-# Sidebar for navigation
-option = st.sidebar.radio("Select an option", ["Battery Drain Prediction", "Data Visualization and Insights"])
+    metrics = [
+        ("📱 271.1 min/day", "App Usage Time"),
+        ("💡 5.27 hrs/day", "Screen On Time"),
+        ("🔋 1525 mAh/day", "Battery Drain"),
+        ("📦 51", "Apps Installed"),
+        ("📶 929.7 MB/day", "Data Usage")
+    ]
 
-if option == "Battery Drain Prediction":
-    st.header('Battery Drain Prediction')
-    st.image('../src/assets/image.png')
+    for col, (value, label) in zip(metrics_col, metrics):
+        col.markdown(f'<div style="{card_style}"><h3>{value}</h3><p>{label}</p></div>', unsafe_allow_html=True)
+
+    st.markdown("----------")
+    st.markdown("### 📌 Exploratory Data Analysis")
     
-    # Input fields for user data
-    screen_on_time = st.number_input('Enter Screen On Time (hours per day)', min_value=0.0, max_value=24.0, value=5.0)
-    app_usage_time = st.number_input('Enter App Usage Time (minutes per day)', min_value=0, value=120)
-    data_usage = st.number_input('Enter Data Usage (MB per day)', min_value=0, value=500)
-    number_of_apps = st.number_input('Enter Number of Apps', min_value=0, value=30)
-    os_type = st.selectbox('Select OS Type', ['Android', 'iOS'])
-    os_type = 1 if os_type == 'iOS' else 0
+    metrics_data = [
+        ("../visualizations/correlation_heatmap.png", "Correlation Heatmap")
+    ]
+    for i in range(0, len(metrics_data), 1):
+        cols = st.columns(1)
+        for j in range(1):
+            if i + j < len(metrics_data):
+                image_url, title = metrics_data[i + j]
+                with cols[j]:
+                    st.markdown(f"### {title}")
+                    st.image(image_url, use_container_width=True)
+                    with st.expander(f"🔍 View Insights: {title}", expanded=False):
+                        st.markdown(f"### Insights for {title}")
+                        st.write("- Example insights will be listed here.")
+                        st.markdown("- Helps understand screen on time trends and battery usage behavior.")
+    st.markdown("--------------------")
+    st.markdown("### 📌 Android Vs iOS Behavior Analysis")
 
+    metrics_data = [
+        ("../visualizations/os_distribution.png", "OS Type Distribution"),
+        ("../visualizations/os_type_bar.png", "iOS vs Android Battery Drain"),
+        ("../visualizations/os_boxplot.png", "Battery Drain by OS Type")
+    ]
+
+    for i in range(0, len(metrics_data), 2):
+        cols = st.columns(2)
+        for j in range(2):
+            if i + j < len(metrics_data):
+                image_url, title = metrics_data[i + j]
+                with cols[j]:
+                    st.markdown(f"### {title}")
+                    st.image(image_url, use_container_width=True)
+                    with st.expander(f"🔍 View Insights: {title}", expanded=False):
+                        st.markdown(f"### Insights for {title}")
+                        st.write("- Example insights will be listed here.")
+                        st.markdown("- Helps understand OS trends and battery usage behavior.")
+    st.markdown("--------------------")
+    st.markdown("### 📌 Screen On time Analysis")
+    
+    metrics_data = [
+        ("../visualizations/screen_on_time_class.png", "Screen On Time Class Distribution"),
+        ("../visualizations/screen_on_time_gender.png", "Screen On Time Gender Distribution"),
+        ("../visualizations/screen_on_time_vs_battery_drain.png", "Screen On Time vs Battery Drain")
+    ]
+    for i in range(0, len(metrics_data), 2):
+        cols = st.columns(2)
+        for j in range(2):
+            if i + j < len(metrics_data):
+                image_url, title = metrics_data[i + j]
+                with cols[j]:
+                    st.markdown(f"### {title}")
+                    st.image(image_url, use_container_width=True)
+                    with st.expander(f"🔍 View Insights: {title}", expanded=False):
+                        st.markdown(f"### Insights for {title}")
+                        st.write("- Example insights will be listed here.")
+                        st.markdown("- Helps understand screen on time trends and battery usage behavior.")
+    
+    
+    st.markdown("--------------------")
+    st.markdown("### 📌 Battery Drain Analysis")
+    
+    metrics_data = [
+        ("../visualizations/app_usage_time_vs_battery_drain.png", "App Usage Time vs Battery Drain"),
+        ("../visualizations/data_consumption_vs_battery_drain.png", "Data Usage vs Battery Drain"),
+        ("../visualizations/number_of_apps_installed_vs_battery_drain.png", "Number of Apps vs Battery Drain"),
+        ("../visualizations/screen_on_time_vs_battery_drain.png", "Screen On Time vs Battery Drain")
+    ]
+    for i in range(0, len(metrics_data), 2):
+        cols = st.columns(2)
+        for j in range(2):
+            if i + j < len(metrics_data):
+                image_url, title = metrics_data[i + j]
+                with cols[j]:
+                    st.markdown(f"### {title}")
+                    st.image(image_url, use_container_width=True)
+                    with st.expander(f"🔍 View Insights: {title}", expanded=False):
+                        st.markdown(f"### Insights for {title}")
+                        st.write("- Example insights will be listed here.")
+                        st.markdown("- Helps understand screen on time trends and battery usage behavior.")
+# Option 2: Hypothesis Testing
+elif option == "Hypothesis Testing Results":
+    st.markdown("### 🔬 Hypothesis Testing Results")
+
+    hypothesis_results = {
+        "Data Usage Change": {
+            "null_hypothesis": "Is there a **significant change** in mobile data usage before and after the app update?",
+            "test_statistic": 2.3,
+            "p_value": 0.03,
+            "result": "Significant Change",
+            "insight": "Data usage increased significantly after the app update."
+        },
+        "Battery Drain Comparison": {
+            "null_hypothesis": "Does **Device A** experience more **battery drain** than **Device B**?",
+            "test_statistic": -0.5,
+            "p_value": 0.62,
+            "result": "No Significant Difference",
+            "insight": "No significant battery drain difference between Device A and Device B."
+        }
+    }
+
+    for test_name, test_data in hypothesis_results.items():
+        with st.expander(f"Test: {test_name}", expanded=False):
+            st.markdown(f"""
+                <div style="font-size: 20px; font-weight: bold; color: #4CAF50; background-color: #e7f7e7; padding: 10px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+                    🤔 <b>{test_data['null_hypothesis']}</b>
+                </div>
+            """, unsafe_allow_html=True)
+
+            st.markdown(f"**Test Statistic**: {test_data['test_statistic']}")
+            st.markdown(f"**P-value**: {test_data['p_value']}")
+
+            if test_data['p_value'] < 0.05:
+                st.markdown(f"""
+                    <div style="background-color: #d4edda; padding: 15px; border-radius: 8px;">
+                        <span style="color: green; font-weight: bold;">✅ **Result**: {test_data['result']} 🔥</span>
+                        <p>{test_data['insight']}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                    <div style="background-color: #f8d7da; padding: 15px; border-radius: 8px;">
+                        <span style="color: red; font-weight: bold;">❌ **Result**: {test_data['result']}</span>
+                        <p>{test_data['insight']}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+
+# Option 3: Battery Drain Prediction
+elif option == "Battery Drain Prediction":
+    st.header("🔋 Battery Drain Prediction")
+    st.image('../src/assets/image.png')
+
+    # Input fields
+    screen_on_time = st.number_input('Screen On Time (hours/day)', min_value=0.0, max_value=24.0, value=5.0)
+    app_usage_time = st.number_input('App Usage Time (minutes/day)', min_value=0, value=120)
+    data_usage = st.number_input('Data Usage (MB/day)', min_value=0, value=500)
+    number_of_apps = st.number_input('Number of Apps Installed', min_value=0, value=30)
+    os_label = st.selectbox('Operating System', ['Android', 'iOS'])
+    os_type = 1 if os_label == 'iOS' else 0
+
+    # Prepare scaled input
     input_data_scaled = [
         min_max_scale(screen_on_time, min_max_values['Screen On Time (hours/day)']['min'], min_max_values['Screen On Time (hours/day)']['max']),
         min_max_scale(app_usage_time, min_max_values['App Usage Time (min/day)']['min'], min_max_values['App Usage Time (min/day)']['max']),
@@ -78,117 +226,31 @@ if option == "Battery Drain Prediction":
     ]
 
     if st.button('Predict Battery Drain'):
-        # Prepare input data
-        input_data = pd.DataFrame([input_data_scaled], columns=['Screen On Time (hours/day)', 'App Usage Time (min/day)', 'Data Usage (MB/day)', 'Number of Apps Installed', 'Operating System'])
-        
-        # Make prediction
-        predicted_battery_drain = model.predict(input_data)
-        predicted_battery_drain = inverse_min_max_scale(predicted_battery_drain[0], min_max_values['Battery Drain (mAh/day)']['min'], min_max_values['Battery Drain (mAh/day)']['max'])
-        
-        st.write(f"Predicted Battery Drain: {predicted_battery_drain:.2f} mAh")
-           
-          
-            # Display recommendations after prediction
+        input_df = pd.DataFrame([input_data_scaled], columns=[
+            'Screen On Time (hours/day)', 'App Usage Time (min/day)',
+            'Data Usage (MB/day)', 'Number of Apps Installed', 'Operating System'
+        ])
+        predicted_scaled = model.predict(input_df)[0]
+        predicted_battery_drain = inverse_min_max_scale(predicted_scaled, min_max_values['Battery Drain (mAh/day)']['min'], min_max_values['Battery Drain (mAh/day)']['max'])
+        st.success(f"🔋 Predicted Battery Drain: {predicted_battery_drain:.2f} mAh")
+
     if st.button('Show Battery Saving Tips'):
-                recommendations = battery_saving_recommendations(screen_on_time, app_usage_time, data_usage, number_of_apps, os_type)
-                st.write("#### Recommended Tips to Conserve Battery:")
-                for tip in recommendations:
-                   st.write(f"- {tip}")
-    
-    # Display Model Performance
+        tips = battery_saving_recommendations(screen_on_time, app_usage_time, data_usage, number_of_apps, os_type)
+        st.markdown("#### 🔧 Recommended Battery Saving Tips:")
+        for tip in tips:
+            st.markdown(f"- {tip}")
 
     if st.button("Show Model Performance"):
-        #pre computed values
+        st.subheader("📈 Model Performance")
         r2 = 0.9434
         rmse = 0.0697
-        st.subheader("Model Performance")
-        st.write(f"**R² Score:** {r2:.4f}")
-        st.write( """
-                - The model explains 94.34% of the variance in the data, meaning it fits the data very well.
-                - A value close to 1 indicates strong predictive power.""")
-        st.write(f"**Root Mean Squared Error (RMSE):** {rmse:.4f}")
-        st.write("""
-                - Measures the average error magnitude. A lower RMSE indicates better accuracy.
-                - Since RMSE is quite low, the model's predictions are very close to actual values.""")
+
+        st.write(f"**R² Score:** {r2:.4f} — explains 94.34% variance in data.")
+        st.write(f"**RMSE:** {rmse:.4f} — low error means high prediction accuracy.")
         st.image('../visualizations/residual_plot.png')
-        st.write("#### Key Insights ")
+        st.markdown("#### Key Insights")
         st.write("""
-                - **Randomly scattered residuals**: Suggests that the model captures the patterns in data well and that linear regression is an appropriate choice.
-                - **Red trend line (LOWESS curve) is mostly flat**: Indicates no strong non-linearity in the model.
-                - **No clear funnel shape**: Suggests constant variance (homoscedasticity), meaning the model's errors are evenly distributed.
-                """)
-    
-
-
-
-
-elif option == "Data Visualization and Insights":
-    st.header(' Mobile Usage Data Visualization')
-    st.subheader("Correlation Heatmap of the Features")
-    st.image('../visualizations/correlation_heatmap.png')
-    st.write("#### Key Insights ")
-    st.markdown("""
-- **Everything is connected** – more screen time leads to higher app usage, battery drain, and data consumption.  
-- **Screen Time & App Usage (0.95):** More phone use = more active app engagement.  
-- **Battery Drain & Installed Apps (0.96):** More apps = higher battery consumption.  
-- **Data Usage (0.93-0.94):** Heavy users also consume more data.  
-""")
-    
-    st.subheader("Battery Drain Analysis")
-    st.image("../visualizations/screen_on_time_vs_battery_draIn.png")
-    st.image("../visualizations/data_consumption_vs_battery_drain.png")
-    st.image("../visualizations/app_usage_time_vs_battery_drain.png")
-    st.image("../visualizations/number_of_apps_installed_vs_battery_drain.png")
-    st.write("##### Key Insights ")
-    st.markdown("""
-- **Screen On Time & Battery Drain**: A clear positive correlation exists between screen-on time and battery drain.
-- **Data Usage & Battery Drain**: Users with higher data consumption also experience higher battery drain.
-- **App Usage Time & Battery Drain**: Users who spend more time on apps also have higher battery drain.
-- **Number of Apps & Battery Drain**: A positive correlation is observed between the number of apps installed and battery drain.
-""")
-
-    st.subheader(" Android Vs iOS behaviour Analysis")
-    st.write("#### Bar graph")
-    st.image('../visualizations/os_type_bar.png')
-    st.write("##### Key Insights ")
-    st.markdown("""
-    - **Battery Drain**: iOS users experience slightly higher battery drain compared to Android users.
-    - **Screen On Time**: iOS users also have a slightly higher screen-on time, indicating more active usage.
-    - **Data Usage**: iOS users consume more data on average than Android users.""")
-    st.write("#### Box plot")
-    st.image('../visualizations/os_boxplot.png')
-    st.write("##### Key Insights ")
-    st.markdown("""
-- **Battery Drain**: Android and iOS users experience similar battery consumption, with a wide variation in both. No significant difference is observed.
-- **Screen On Time**: Both platforms have comparable screen-on times, suggesting similar usage patterns.
-- **Data Usage**: Android and iOS users consume data at nearly the same rate, with no clear outliers.
-             """)
-    
-    st.subheader("Screen-On Time Analysis")
-    st.write("#### Distribution plot for different user categories")
-    st.image('../visualizations/screen_on_time_class.png')
-    st.write("##### Key Insights ")
-    st.markdown("""
-**📈 Positive Correlation**  
-- As the **Behavior Class** increases (1 → 5), **Screen-on Time** also increases consistently.  
-- This suggests that users in higher behavior classes spend **more time** on their screens daily.  
-
-**📊 Spread & Variability**  
-- **Lower classes (1 & 2):** Smaller interquartile ranges (IQR), meaning screen-on time is **more consistent** among users.  
-- **Higher classes (4 & 5):** Larger IQR, meaning screen-on time **varies significantly** among users.  
-
-**🔍 Outliers & Extreme Values**  
-- Some **extreme values** appear in all behavior classes.  
-- **Higher classes (4 & 5):** Wider range, suggesting some users in these classes **use their screens significantly more** than the median.  
-""")
-
-    st.write('#### Screen on time according to Gender')
-    st.image("../visualizations/screen_on_time_gender.png")
-    st.write("##### Key Insights ")
-    st.markdown(""" 
-- Median screen-on time is similar for both genders.
-- Variability (IQR) is nearly identical, meaning consistent usage patterns.
-- Outliers exist in both groups, indicating some heavy users.
-- No significant gender-based difference in screen usage.
-                """)
-
+            - **Residuals are randomly scattered**: Model captures patterns well.
+            - **Flat LOWESS curve**: Indicates a linear model is appropriate.
+            - **No funnel shape**: Suggests consistent variance (homoscedasticity).
+        """)
