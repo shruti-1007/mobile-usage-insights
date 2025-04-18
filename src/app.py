@@ -31,6 +31,92 @@ def battery_saving_recommendations(screen_on_time, app_usage_time, data_usage, n
         recommendations.append("Android users can activate Battery Saver Mode for better battery management.")
 
     return recommendations
+ # Function to return insights based on title
+def get_insights(title):
+        if title == "OS Type Distribution":
+            return """
+            - Majority of users are on Android.
+            - This distribution helps in focusing optimization efforts.
+            """
+        elif title == "iOS vs Android Battery Drain":
+            return """
+          🔋 iOS vs Android – Who Uses More?
+
+            - Battery Drain: iOS users lose slightly more battery per day—maybe all those sleek animations come at a cost?
+
+            - Screen Time: iOS folks stay glued to their screens a bit longer than Android users.
+
+            - Data Usage: iOS leads again, hinting at heavier app or content usage.
+
+            📊 Overall, iOS users seem to use their devices more intensively—but the gap isn’t huge!
+            """
+        elif title == "Battery Drain by OS Type":
+            return """
+           📱 Android vs iOS: Who’s Draining More?
+
+            - Battery Drain: Both platforms show similar medians, but iOS users have a slightly wider spread—some really drain that battery!
+
+            - Screen Time: The median screen time is almost the same, but iOS users tend to have more consistent usage.
+
+            - Data Usage: iOS users use a bit more mobile data on average, though the range is wide for both.
+
+            ⚖️ Takeaway: Android and iOS users behave similarly overall—but iOS users slightly edge ahead in consistency and intensity.
+            """
+        elif title == "Correlation Heatmap":
+            return """
+            - Usage Patterns Move Together: People who spend more time on apps, keep their screens on longer, and install more apps also tend to use more battery and data.
+
+            - App Usage Drives Battery Drain: The strongest connection is between app usage time and battery drain (correlation: 0.96).
+
+            - More Apps, More Activity: Having more apps installed closely aligns with higher usage and battery drain (correlation: 0.96).
+
+            - Screen Time Reflects Overall Use: Screen-on time is highly linked to both app usage and battery drain (correlation: 0.95).
+
+            - Data Usage Is Slightly Less Tied: While still strongly connected, data usage has a slightly lower correlation with other habits (0.93–0.94), suggesting some users may use their phones a lot without always using a lot of data
+                        """
+        elif title == "Screen On Time Class Distribution":
+            return """
+            - The higher the behavior class, the more glued to the screen—Class 5 users are true screen-time pros!
+
+            - Screen-on time rises like steps; each class levels up the hours spent on the phone.
+
+            - Class 1 barely checks their phone, but by Class 5, it’s almost a full hour a day—talk about dedication!
+            """    
+        elif title == "Screen On Time Gender Distribution":
+            return """
+            - Both guys and girls spend about the same time glued to their screens—no clear winner here!
+
+            - The middle 50% of both groups have very similar screen habits, showing most people use their phones for roughly the same amount of time.
+
+            - Outliers exist, but the top screen-timers in both groups are equally dedicated.
+
+            In short: When it comes to screen time, it’s a tie—everyone’s in on the scrolling action!
+            """
+        elif title == "Screen On Time vs Battery Drain":
+            return """
+            - The scatter plot shows a clear positive relationship: as screen-on time increases, battery drain also rises.
+
+            - The data points form distinct clusters, highlighting consistent usage patterns—longer screen time almost always means higher battery drain.
+
+            - This strong upward trend visually confirms that keeping your screen on is a major factor in battery consumption.
+            """    
+        elif title == "App Usage Time vs Battery Drain":
+            return """
+            - Increased app usage time leads to higher battery drain.
+            - This trend is consistent across all OS types.
+            """
+        elif title == "Data Usage vs Battery Drain":
+            return """
+            - Higher data usage correlates with increased battery drain.
+            - This trend is consistent across all OS types.
+            """
+        elif title == "Number of Apps vs Battery Drain":
+            return """
+            - More apps installed lead to higher battery drain.
+            - This trend is consistent across all OS types.
+            """
+        else:
+            return "No specific insights available for this visualization."
 
 def min_max_scale(value, min_val, max_val):
     return (value - min_val) / (max_val - min_val) if max_val != min_val else 0
@@ -89,9 +175,7 @@ if option == "Data Visualization and Insights":
                     st.markdown(f"### {title}")
                     st.image(image_url, use_container_width=True)
                     with st.expander(f"🔍 View Insights: {title}", expanded=False):
-                        st.markdown(f"### Insights for {title}")
-                        st.write("- Example insights will be listed here.")
-                        st.markdown("- Helps understand screen on time trends and battery usage behavior.")
+                      st.markdown(get_insights(title))
     st.markdown("--------------------")
     st.markdown("### 📌 Android Vs iOS Behavior Analysis")
 
@@ -100,6 +184,8 @@ if option == "Data Visualization and Insights":
         ("../visualizations/os_type_bar.png", "iOS vs Android Battery Drain"),
         ("../visualizations/os_boxplot.png", "Battery Drain by OS Type")
     ]
+
+   
 
     for i in range(0, len(metrics_data), 2):
         cols = st.columns(2)
@@ -110,9 +196,7 @@ if option == "Data Visualization and Insights":
                     st.markdown(f"### {title}")
                     st.image(image_url, use_container_width=True)
                     with st.expander(f"🔍 View Insights: {title}", expanded=False):
-                        st.markdown(f"### Insights for {title}")
-                        st.write("- Example insights will be listed here.")
-                        st.markdown("- Helps understand OS trends and battery usage behavior.")
+                        st.markdown(get_insights(title))
     st.markdown("--------------------")
     st.markdown("### 📌 Screen On time Analysis")
     
@@ -130,9 +214,7 @@ if option == "Data Visualization and Insights":
                     st.markdown(f"### {title}")
                     st.image(image_url, use_container_width=True)
                     with st.expander(f"🔍 View Insights: {title}", expanded=False):
-                        st.markdown(f"### Insights for {title}")
-                        st.write("- Example insights will be listed here.")
-                        st.markdown("- Helps understand screen on time trends and battery usage behavior.")
+                        st.markdown(get_insights(title))
     
     
     st.markdown("--------------------")
@@ -153,9 +235,7 @@ if option == "Data Visualization and Insights":
                     st.markdown(f"### {title}")
                     st.image(image_url, use_container_width=True)
                     with st.expander(f"🔍 View Insights: {title}", expanded=False):
-                        st.markdown(f"### Insights for {title}")
-                        st.write("- Example insights will be listed here.")
-                        st.markdown("- Helps understand screen on time trends and battery usage behavior.")
+                     st.markdown(get_insights(title))
 # Option 2: Hypothesis Testing
 elif option == "Hypothesis Testing Results":
     st.markdown("### 🔬 Hypothesis Testing Results")
