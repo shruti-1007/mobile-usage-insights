@@ -240,21 +240,44 @@ if option == "Data Visualization and Insights":
 elif option == "Hypothesis Testing Results":
     st.markdown("### 🔬 Hypothesis Testing Results")
 
+
     hypothesis_results = {
-        "Data Usage Change": {
-            "null_hypothesis": "Is there a **significant change** in mobile data usage before and after the app update?",
-            "test_statistic": 2.3,
-            "p_value": 0.03,
+        "No of apps and battery drain": {
+            "null_hypothesis": "Do users with more apps experience higher battery drain?",
+            "Pearson correlation": 0.9618532619047163,
+            "test_statistic": -65.16217705317031,
+            "p_value": 4.971139948469787e-235,
             "result": "Significant Change",
-            "insight": "Data usage increased significantly after the app update."
+            "insight": "the number of apps is indeed a major factor in battery drain."
+
         },
-        "Battery Drain Comparison": {
-            "null_hypothesis": "Does **Device A** experience more **battery drain** than **Device B**?",
-            "test_statistic": -0.5,
-            "p_value": 0.62,
-            "result": "No Significant Difference",
-            "insight": "No significant battery drain difference between Device A and Device B."
-        }
+        "Excessive Data Usage and Battery Life": {
+            "null_hypothesis": "Does excessive data usage significantly impact battery life??",
+            "test_statistic": -39.161488131489094, 
+            "p_value": 2.500096841647699e-178,
+            "result": "Significant Change",
+            "insight": "Excessive data usage significantly impacts battery life."
+            
+        },
+        "Gender and Screen Time": {
+            "null_hypothesis": "Does gender impact screen-on time?",
+            "test_statistic":  0.09440784461385819,
+            "p_value":  0.9248122785055027,
+            "result": "No Change",
+            "insight": "There is no statistically significant difference in screen-on time between males and females. Therefore, gender does not have a significant impact on screen-on time."
+        },
+        "User Class and Battery Drain": {
+            "null_hypothesis": "Do extreme users (Class 5) have significantly higher screen-on time?",
+            "test_statistic": 32.44157588647852,
+            "p_value":  1.720708987024662e-141,
+            "result": "Significant Change",
+            "insight": "Class 5 (extreme users) has significantly higher screen-on time compared to the other classes."
+        }, 
+        "OS Type  Differnce": {
+            "null_hypothesis": "Is there any significant difference between iOS users  than Android users?",
+            "result": "No Significatnt Change",
+            "insight": "No significant difference between Android and iOS users",
+        },  
     }
 
     for test_name, test_data in hypothesis_results.items():
@@ -264,24 +287,47 @@ elif option == "Hypothesis Testing Results":
                     🤔 <b>{test_data['null_hypothesis']}</b>
                 </div>
             """, unsafe_allow_html=True)
+            if(test_name == "OS Type  Differnce"):
+               st.markdown("#### 🔋 **Feature:** Battery Drain (mAh/day)")
+               st.markdown("T-statistic: -1.069, P-value: 0.28620")
+               st.markdown("#### 📱 **Feature:** Screen On Time (hours/day)")
+               st.markdown("T-statistic: -0.717, P-value: 0.47381")
+               st.markdown("#### 🌐 **Feature:** Data Usage (MB/day)")
+               st.markdown("T-statistic: -0.772, P-value: 0.44072")
+               st.markdown("#### 📲 **Feature:** Number of Apps Installed")
+               st.markdown("T-statistic: -1.029, P-value: 0.30472")
 
-            st.markdown(f"**Test Statistic**: {test_data['test_statistic']}")
-            st.markdown(f"**P-value**: {test_data['p_value']}")
+                # Styled result block with more engaging visuals
+               st.markdown(f"""
+                    <div style="background-color: #f8d7da; padding: 25px; border-radius: 12px; margin-top: 30px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+                        <span style="color: #D9534F; font-weight: bold; font-size: 20px;">❌ **Result:** {test_data['result']}</span>
+                        <p style='color:#333333; font-size: 18px; margin-top: 15px; line-height: 1.6;'>{test_data['insight']}</p>
+                    </div>
+                """, unsafe_allow_html=True)
 
-            if test_data['p_value'] < 0.05:
+
+    
+
+            else:
+
+             st.markdown(f"**Test Statistic**: {test_data['test_statistic']}")
+             st.markdown(f"**P-value**: {test_data['p_value']}")
+
+             if test_data['p_value'] < 0.05:
                 st.markdown(f"""
                     <div style="background-color: #d4edda; padding: 15px; border-radius: 8px;">
                         <span style="color: green; font-weight: bold;">✅ **Result**: {test_data['result']} 🔥</span>
-                        <p>{test_data['insight']}</p>
+                        <p style='color:black'>{test_data['insight']}</p>
                     </div>
                 """, unsafe_allow_html=True)
-            else:
+             else:
                 st.markdown(f"""
                     <div style="background-color: #f8d7da; padding: 15px; border-radius: 8px;">
                         <span style="color: red; font-weight: bold;">❌ **Result**: {test_data['result']}</span>
-                        <p>{test_data['insight']}</p>
+                        <p style='color:black'>{test_data['insight']}</p>
                     </div>
                 """, unsafe_allow_html=True)
+            
 
 # Option 3: Battery Drain Prediction
 elif option == "Battery Drain Prediction":
