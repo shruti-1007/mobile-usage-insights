@@ -251,6 +251,11 @@ elif option == "Hypothesis Testing Results":
             "insight": "the number of apps is indeed a major factor in battery drain."
 
         },
+         "OS Type  Differnce": {
+            "null_hypothesis": "Is there any significant difference between iOS users  than Android users?",
+            "result": "No Significatnt Change",
+            "insight": "No significant difference between Android and iOS users",
+        }, 
         "Excessive Data Usage and Battery Life": {
             "null_hypothesis": "Does excessive data usage significantly impact battery life??",
             "test_statistic": -39.161488131489094, 
@@ -273,11 +278,7 @@ elif option == "Hypothesis Testing Results":
             "result": "Significant Change",
             "insight": "Class 5 (extreme users) has significantly higher screen-on time compared to the other classes."
         }, 
-        "OS Type  Differnce": {
-            "null_hypothesis": "Is there any significant difference between iOS users  than Android users?",
-            "result": "No Significatnt Change",
-            "insight": "No significant difference between Android and iOS users",
-        },  
+        
     }
 
     for test_name, test_data in hypothesis_results.items():
