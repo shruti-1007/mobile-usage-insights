@@ -115,6 +115,60 @@ def get_insights(title):
             - More apps installed lead to higher battery drain.
             - This trend is consistent across all OS types.
             """
+        elif title == "Brands and Gender Distribution":
+            return """
+            - Almost all brands are used.
+            - Slightly more male users than female users.
+            """
+        elif title == "Age Distribution":
+            return """
+            - Users range evenly from 18 to 60 years.
+
+            - Sightly more users are in their early 20s and late 50s.
+
+            - Middle-aged users (30–50) show steady usage.
+
+            - The balanced age spread helps create a model that works well for all age groups.
+            """
+        elif title == "Screen On time Distribution":
+            return """
+            - Unimodal distribution with a peak around 4–6 hours/day.
+
+            - Most users fall in the moderate screen time range.
+
+            - Right-skewed — a few users show very high screen-on time.
+            - Includes both casual and heavy users.
+            """
+        elif title == "Battery Drain Distribution":
+            return """
+            - Unimodal distribution with a peak around 1000–1500 mAh/day.
+
+            - Most users have moderate battery usage.
+
+            - Right-skewed — some users show very high battery drain.
+
+            - Represents both casual and heavy device users.
+            """
+        elif title == "App Usage Time Distribution":
+            return """
+            - Bimodal distribution with two peaks:
+
+            - Low to moderate usage (~100–150 minutes/day)
+
+            - High usage (~400–450 minutes/day)
+
+            - Right-skewed with a few outliers showing excessive app usage
+
+            - Indicates the presence of both casual and heavy users
+
+            - Useful for app developers and mobile device manufacturers to understand user behavior and tailor experiences accordingly.
+            """
+        elif title=="Battery Drain Density":
+            return """
+           - Android shows more variation in battery use
+
+           """
+
         else:
             return "No specific insights available for this visualization."
 
@@ -164,11 +218,19 @@ if option == "Data Visualization and Insights":
     st.markdown("### 📌 Exploratory Data Analysis")
     
     metrics_data = [
-        ("../visualizations/correlation_heatmap.png", "Correlation Heatmap")
+        ("../visualizations/correlation_heatmap.png", "Correlation Heatmap"),
+        ("../visualizations/brand_and_gender_distribution.png", "Brands and Gender Distribution"),
+        ("../visualizations/age_distribution.png", "Age Distribution"),
+        ("../visualizations/screen_time_distribution.png", "Screen On time Distribution"),
+        ("../visualizations/battery_drain_distribution.png", "Battery Drain Distribution"),
+        ("../visualizations/app_usage_time_distribution.png", "App Usage Time Distribution"),
+
+
+      
     ]
-    for i in range(0, len(metrics_data), 1):
-        cols = st.columns(1)
-        for j in range(1):
+    for i in range(0, len(metrics_data), 2):
+        cols = st.columns(2)
+        for j in range(2):
             if i + j < len(metrics_data):
                 image_url, title = metrics_data[i + j]
                 with cols[j]:
@@ -182,7 +244,9 @@ if option == "Data Visualization and Insights":
     metrics_data = [
         ("../visualizations/os_distribution.png", "OS Type Distribution"),
         ("../visualizations/os_type_bar.png", "iOS vs Android Battery Drain"),
-        ("../visualizations/os_boxplot.png", "Battery Drain by OS Type")
+        ("../visualizations/os_boxplot.png", "Battery Drain by OS Type"),
+        ("../visualizations/os_battery_kde.png", "Battery Drain Density"),
+     
     ]
 
    
@@ -203,7 +267,8 @@ if option == "Data Visualization and Insights":
     metrics_data = [
         ("../visualizations/screen_on_time_class.png", "Screen On Time Class Distribution"),
         ("../visualizations/screen_on_time_gender.png", "Screen On Time Gender Distribution"),
-        ("../visualizations/screen_on_time_vs_battery_drain.png", "Screen On Time vs Battery Drain")
+        ("../visualizations/screen_on_time_vs_battery_drain.png", "Screen On Time vs Battery Drain"),
+      
     ]
     for i in range(0, len(metrics_data), 2):
         cols = st.columns(2)
