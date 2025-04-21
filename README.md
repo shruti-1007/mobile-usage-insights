@@ -30,7 +30,10 @@ This project analyzes smartphone usage patterns and predicts battery drain based
 - **Metrics**:  
   -  **R² Score**: `0.9434`  
   -  **RMSE**: `0.0697`  
-- **Residual Analysis**: Ensures model assumptions hold.  
+- **Residual Analysis**: Ensures model assumptions hold.
+- **Other Algorithms Tested**: RandomForestRegressor
+   - **R²** : `0.95`
+   - **RMSE**: ` 0.0668 ± 0.0054`
 
 ##  Streamlit App Features  
 -  **Interactive Visualizations**  
