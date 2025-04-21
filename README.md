@@ -45,6 +45,8 @@ This project analyzes smartphone usage patterns and predicts battery drain based
    ```bash
    pip install -r requirements.txt
    streamlit run app.py
+## Demo Video
+-[Click here to see the demo](https://youtu.be/UlacpIjy57E?si=_RoCjf0XYuqZ4k0B)
  ## Contributors
   
 - [Shristi Pokhrel](https://github.com/Shri-29)
